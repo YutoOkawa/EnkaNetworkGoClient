@@ -41,5 +41,5 @@ func main() {
 	if err != nil {
 		fmt.Errorf(err.Error())
 	}
-	fmt.Println(enkaNetworkRes.PlayerInfo.NickName)
+	fmt.Println(enkaNetworkRes)
 }
