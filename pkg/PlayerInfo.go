@@ -16,3 +16,14 @@ type PlayerInfo struct {
 	FetterCount          int              `json:"fetterCount"`
 	TowerStarIndex       int              `json:"towerStarIndex"`
 }
+
+type ShowAvatarInfo struct {
+	AvatarId    int `json:"avatarId"`
+	Level       int `json:"level"`
+	TalentLevel int `json:"talentLevel"`
+	EnergyType  int `json:"energyType"`
+}
+
+type ProfilePicture struct {
+	AvatarId int `json:"avatarId"`
+}
