@@ -23,11 +23,31 @@ func NewClient() *Client {
 	}
 }
 
+func (c *Client) GetCharacterData() (map[string]model.CharacterData, error) {
+	url := "https://raw.githubusercontent.com/EnkaNetwork/API-docs/refs/heads/master/store/characters.json"
+
+	body, err := c.fetchData(url)
+	if err != nil {
+		return nil, err
+	}
+
+	var characterData map[string]model.CharacterData
+	err = json.Unmarshal(body, &characterData)
+	if err != nil {
+		return nil, err
+	}
+
+	return characterData, nil
+}
+
 func (c *Client) GetAllData(playerId string) (*model.EnkaNetworkResponse, error) {
 	// TODO: Optional endpoint
 	url := fmt.Sprintf("https://enka.network/api/uid/%s", playerId)
 
 	body, err := c.fetchData(url)
+	if err != nil {
+		return nil, err
+	}
 
 	var enkaNetworkRes model.EnkaNetworkResponse
 	err = json.Unmarshal(body, &enkaNetworkRes)
@@ -43,6 +63,9 @@ func (c *Client) GetPlayerInfo(playerId string) (*model.PlayerInfo, error) {
 	url := fmt.Sprintf("https://enka.network/api/uid/%s?info", playerId)
 
 	body, err := c.fetchData(url)
+	if err != nil {
+		return nil, err
+	}
 
 	var playerInfo struct {
 		PlayerInfo model.PlayerInfo `json:"playerInfo"`
