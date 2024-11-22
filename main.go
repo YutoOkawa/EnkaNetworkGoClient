@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -14,7 +15,10 @@ func main() {
 		Timeout: 10 * time.Second,
 	}
 
-	req, err := http.NewRequest(http.MethodGet, "https://enka.network/api/uid/862615394", nil)
+	playerID := os.Getenv("PLAYER_ID")
+	url := fmt.Sprintf("https://enka.network/api/uid/%s", playerID)
+
+	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		fmt.Errorf(err.Error())
 	}
