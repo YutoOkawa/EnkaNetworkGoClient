@@ -1,4 +1,4 @@
-package pkg
+package model
 
 type Equip struct {
 	ItemID    int        `json:"itemId"`

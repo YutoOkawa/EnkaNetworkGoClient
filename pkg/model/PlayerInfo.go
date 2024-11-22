@@ -1,4 +1,4 @@
-package pkg
+package model
 
 type PlayerInfo struct {
 	NickName             string           `json:"nickName"`

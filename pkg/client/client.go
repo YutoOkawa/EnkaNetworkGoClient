@@ -1,7 +1,7 @@
 package client
 
 import (
-	"EnkaNetworkGoClient/pkg"
+	"EnkaNetworkGoClient/pkg/model"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+// TODO: cache
+// TODO: retry (only for 5xx)
 type Client struct {
 	client *http.Client
 }
@@ -21,13 +23,13 @@ func NewClient() *Client {
 	}
 }
 
-func (c *Client) GetAllData(playerId string) (*pkg.EnkaNetworkResponse, error) {
+func (c *Client) GetAllData(playerId string) (*model.EnkaNetworkResponse, error) {
 	// TODO: Optional endpoint
 	url := fmt.Sprintf("https://enka.network/api/uid/%s", playerId)
 
 	body, err := c.fetchData(url)
 
-	var enkaNetworkRes pkg.EnkaNetworkResponse
+	var enkaNetworkRes model.EnkaNetworkResponse
 	err = json.Unmarshal(body, &enkaNetworkRes)
 	if err != nil {
 		return nil, err
@@ -36,14 +38,14 @@ func (c *Client) GetAllData(playerId string) (*pkg.EnkaNetworkResponse, error) {
 	return &enkaNetworkRes, nil
 }
 
-func (c *Client) GetPlayerInfo(playerId string) (*pkg.PlayerInfo, error) {
+func (c *Client) GetPlayerInfo(playerId string) (*model.PlayerInfo, error) {
 	// TODO: Optional endpoint
 	url := fmt.Sprintf("https://enka.network/api/uid/%s?info", playerId)
 
 	body, err := c.fetchData(url)
 
 	var playerInfo struct {
-		PlayerInfo pkg.PlayerInfo `json:"playerInfo"`
+		PlayerInfo model.PlayerInfo `json:"playerInfo"`
 	}
 	err = json.Unmarshal(body, &playerInfo)
 	if err != nil {

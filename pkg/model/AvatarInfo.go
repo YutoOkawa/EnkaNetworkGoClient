@@ -1,4 +1,4 @@
-package pkg
+package model
 
 type AvatarInfo struct {
 	AvatarID              int             `json:"avatarId"`
