@@ -36,6 +36,23 @@ func (c *Client) GetAllData(playerId string) (*pkg.EnkaNetworkResponse, error) {
 	return &enkaNetworkRes, nil
 }
 
+func (c *Client) GetPlayerInfo(playerId string) (*pkg.PlayerInfo, error) {
+	// TODO: Optional endpoint
+	url := fmt.Sprintf("https://enka.network/api/uid/%s?info", playerId)
+
+	body, err := c.fetchData(url)
+
+	var playerInfo struct {
+		PlayerInfo pkg.PlayerInfo `json:"playerInfo"`
+	}
+	err = json.Unmarshal(body, &playerInfo)
+	if err != nil {
+		return nil, err
+	}
+
+	return &playerInfo.PlayerInfo, nil
+}
+
 func (c *Client) fetchData(url string) ([]byte, error) {
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {

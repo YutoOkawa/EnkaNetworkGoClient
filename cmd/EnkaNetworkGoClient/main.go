@@ -16,4 +16,10 @@ func main() {
 		fmt.Errorf(err.Error())
 	}
 	fmt.Println(*enkaNetworkRes)
+
+	playerData, err := client.GetPlayerInfo(playerID)
+	if err != nil {
+		fmt.Errorf(err.Error())
+	}
+	fmt.Println(*playerData)
 }
