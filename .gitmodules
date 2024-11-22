@@ -1,0 +1,3 @@
+[submodule "EnkaNetworkAPIDocs"]
+	path = EnkaNetworkAPIDocs
+	url = git@github.com:EnkaNetwork/API-docs.git
