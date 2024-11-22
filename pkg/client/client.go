@@ -40,6 +40,23 @@ func (c *Client) GetCharacterData() (map[string]model.CharacterData, error) {
 	return characterData, nil
 }
 
+func (c *Client) GetLocalizationData() (map[string]map[string]string, error) {
+	url := "https://raw.githubusercontent.com/EnkaNetwork/API-docs/refs/heads/master/store/loc.json"
+
+	body, err := c.fetchData(url)
+	if err != nil {
+		return nil, err
+	}
+
+	var localizationData map[string]map[string]string
+	err = json.Unmarshal(body, &localizationData)
+	if err != nil {
+		return nil, err
+	}
+
+	return localizationData, nil
+}
+
 func (c *Client) GetAllData(playerId string) (*model.EnkaNetworkResponse, error) {
 	// TODO: Optional endpoint
 	url := fmt.Sprintf("https://enka.network/api/uid/%s", playerId)

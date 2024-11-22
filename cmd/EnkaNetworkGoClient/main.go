@@ -29,4 +29,10 @@ func main() {
 		fmt.Errorf(err.Error())
 	}
 	fmt.Println(characterData)
+
+	localizationData, err := client.GetLocalizationData()
+	if err != nil {
+		fmt.Errorf(err.Error())
+	}
+	fmt.Println(localizationData)
 }
