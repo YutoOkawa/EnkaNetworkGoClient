@@ -11,7 +11,7 @@ func main() {
 
 	client := client.NewClient()
 
-	enkaNetworkRes, err := client.Get(playerID)
+	enkaNetworkRes, err := client.GetAllData(playerID)
 	if err != nil {
 		fmt.Errorf(err.Error())
 	}

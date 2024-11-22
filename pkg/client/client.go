@@ -21,27 +21,11 @@ func NewClient() *Client {
 	}
 }
 
-func (c *Client) Get(playerId string) (*pkg.EnkaNetworkResponse, error) {
+func (c *Client) GetAllData(playerId string) (*pkg.EnkaNetworkResponse, error) {
 	// TODO: Optional endpoint
 	url := fmt.Sprintf("https://enka.network/api/uid/%s", playerId)
-	req, err := http.NewRequest(http.MethodGet, url, nil)
-	if err != nil {
-		return nil, err
-	}
 
-	// TODO: Optional headers
-	req.Header.Add("User-Agent", "EnkaNetworkGoClient")
-
-	res, err := c.client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
+	body, err := c.fetchData(url)
 
 	var enkaNetworkRes pkg.EnkaNetworkResponse
 	err = json.Unmarshal(body, &enkaNetworkRes)
@@ -50,4 +34,29 @@ func (c *Client) Get(playerId string) (*pkg.EnkaNetworkResponse, error) {
 	}
 
 	return &enkaNetworkRes, nil
+}
+
+func (c *Client) fetchData(url string) ([]byte, error) {
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("User-Agent", "EnkaNetworkGoClient")
+
+	res, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	// TODO: status code handling
+	// refer: https://github.com/EnkaNetwork/API-docs/blob/master/api_ja.md#httpレスポンスコード
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return body, nil
 }
