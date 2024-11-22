@@ -1,0 +1,9 @@
+version: '3'
+
+tasks:
+  build:
+    cmds:
+      - go build -o ./cmd/EnkaNetworkGoClient ./cmd/EnkaNetworkGoClient
+  run:
+    cmds:
+      - ./cmd/EnkaNetworkGoClient/EnkaNetworkGoClient
