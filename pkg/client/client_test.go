@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -92,7 +93,7 @@ func TestClient_FetchData(t *testing.T) {
 			defer server.Close()
 
 			c := NewClient()
-			got, err := c.fetchData(server.URL)
+			got, err := c.fetchData(context.Background(), server.URL)
 			if err == nil && tt.wantErr != nil {
 				t.Errorf("Client.FetchData() error = %v, wantErr %v", err, tt.wantErr)
 			}

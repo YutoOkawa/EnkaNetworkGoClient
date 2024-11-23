@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 
@@ -13,25 +14,25 @@ func main() {
 
 	client := client.NewClient()
 
-	enkaNetworkRes, err := client.GetAllData(playerID)
+	enkaNetworkRes, err := client.GetAllData(context.Background(), playerID)
 	if err != nil {
 		fmt.Errorf(err.Error())
 	}
 	fmt.Println("level:", enkaNetworkRes.AvatarInfoList[0].PropMap[model.PROP_TYPE_LEVEL].Val)
 
-	playerData, err := client.GetPlayerInfo(playerID)
+	playerData, err := client.GetPlayerInfo(context.Background(), playerID)
 	if err != nil {
 		fmt.Errorf(err.Error())
 	}
 	fmt.Println(*playerData)
 
-	characterData, err := client.GetCharacterData()
+	characterData, err := client.GetCharacterData(context.Background())
 	if err != nil {
 		fmt.Errorf(err.Error())
 	}
 	fmt.Println(characterData)
 
-	localizationData, err := client.GetLocalizationData()
+	localizationData, err := client.GetLocalizationData(context.Background())
 	if err != nil {
 		fmt.Errorf(err.Error())
 	}

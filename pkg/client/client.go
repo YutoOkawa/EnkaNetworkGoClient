@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -28,10 +29,10 @@ func NewClient() *Client {
 	}
 }
 
-func (c *Client) GetCharacterData() (map[string]model.CharacterData, error) {
+func (c *Client) GetCharacterData(ctx context.Context) (map[string]model.CharacterData, error) {
 	url := "https://raw.githubusercontent.com/EnkaNetwork/API-docs/refs/heads/master/store/characters.json"
 
-	body, err := c.fetchDataWithCache(url)
+	body, err := c.fetchDataWithCache(ctx, url)
 	if err != nil {
 		return nil, err
 	}
@@ -45,10 +46,10 @@ func (c *Client) GetCharacterData() (map[string]model.CharacterData, error) {
 	return characterData, nil
 }
 
-func (c *Client) GetLocalizationData() (map[string]map[string]string, error) {
+func (c *Client) GetLocalizationData(ctx context.Context) (map[string]map[string]string, error) {
 	url := "https://raw.githubusercontent.com/EnkaNetwork/API-docs/refs/heads/master/store/loc.json"
 
-	body, err := c.fetchDataWithCache(url)
+	body, err := c.fetchDataWithCache(ctx, url)
 	if err != nil {
 		return nil, err
 	}
@@ -62,11 +63,11 @@ func (c *Client) GetLocalizationData() (map[string]map[string]string, error) {
 	return localizationData, nil
 }
 
-func (c *Client) GetAllData(playerId string) (*model.EnkaNetworkResponse, error) {
+func (c *Client) GetAllData(ctx context.Context, playerId string) (*model.EnkaNetworkResponse, error) {
 	// TODO: Optional endpoint
 	url := fmt.Sprintf("https://enka.network/api/uid/%s", playerId)
 
-	body, err := c.fetchDataWithCache(url)
+	body, err := c.fetchDataWithCache(ctx, url)
 	if err != nil {
 		return nil, err
 	}
@@ -80,11 +81,11 @@ func (c *Client) GetAllData(playerId string) (*model.EnkaNetworkResponse, error)
 	return &enkaNetworkRes, nil
 }
 
-func (c *Client) GetPlayerInfo(playerId string) (*model.PlayerInfo, error) {
+func (c *Client) GetPlayerInfo(ctx context.Context, playerId string) (*model.PlayerInfo, error) {
 	// TODO: Optional endpoint
 	url := fmt.Sprintf("https://enka.network/api/uid/%s?info", playerId)
 
-	body, err := c.fetchDataWithCache(url)
+	body, err := c.fetchDataWithCache(ctx, url)
 	if err != nil {
 		return nil, err
 	}
@@ -104,12 +105,18 @@ func (c *Client) GetCahce() Cache {
 	return &c.cache
 }
 
-func (c *Client) fetchDataWithCache(url string) ([]byte, error) {
+func (c *Client) fetchDataWithCache(ctx context.Context, url string) ([]byte, error) {
 	if data := c.cache.Get(url); data != nil {
 		return data, nil
 	}
 
-	data, err := c.fetchData(url)
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	default:
+	}
+
+	data, err := c.fetchData(ctx, url)
 	if err != nil {
 		return nil, err
 	}
@@ -119,8 +126,8 @@ func (c *Client) fetchDataWithCache(url string) ([]byte, error) {
 	return data, nil
 }
 
-func (c *Client) fetchData(url string) ([]byte, error) {
-	req, err := http.NewRequest(http.MethodGet, url, nil)
+func (c *Client) fetchData(ctx context.Context, url string) ([]byte, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
 	}
