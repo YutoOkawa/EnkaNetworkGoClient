@@ -110,8 +110,13 @@ func (c *Client) fetchData(url string) ([]byte, error) {
 	}
 	defer res.Body.Close()
 
-	// TODO: status code handling
-	// refer: https://github.com/EnkaNetwork/API-docs/blob/master/api_ja.md#httpレスポンスコード
+	if res.StatusCode >= 400 && res.StatusCode < 500 {
+		return nil, fmt.Errorf("Client error: %d", res.StatusCode)
+	}
+
+	if res.StatusCode >= 500 {
+		return nil, fmt.Errorf("Server error: %d", res.StatusCode)
+	}
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
