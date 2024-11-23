@@ -14,6 +14,7 @@ import (
 // TODO: retry (only for 5xx)
 type Client struct {
 	client *http.Client
+	cache  UserDataCache
 }
 
 func NewClient() *Client {
@@ -21,13 +22,16 @@ func NewClient() *Client {
 		client: &http.Client{
 			Timeout: 10 * time.Second, // TODO: Optional timeout
 		},
+		cache: UserDataCache{
+			cache: make(map[string][]byte),
+		},
 	}
 }
 
 func (c *Client) GetCharacterData() (map[string]model.CharacterData, error) {
 	url := "https://raw.githubusercontent.com/EnkaNetwork/API-docs/refs/heads/master/store/characters.json"
 
-	body, err := c.fetchData(url)
+	body, err := c.fetchDataWithCache(url)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +48,7 @@ func (c *Client) GetCharacterData() (map[string]model.CharacterData, error) {
 func (c *Client) GetLocalizationData() (map[string]map[string]string, error) {
 	url := "https://raw.githubusercontent.com/EnkaNetwork/API-docs/refs/heads/master/store/loc.json"
 
-	body, err := c.fetchData(url)
+	body, err := c.fetchDataWithCache(url)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +66,7 @@ func (c *Client) GetAllData(playerId string) (*model.EnkaNetworkResponse, error)
 	// TODO: Optional endpoint
 	url := fmt.Sprintf("https://enka.network/api/uid/%s", playerId)
 
-	body, err := c.fetchData(url)
+	body, err := c.fetchDataWithCache(url)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +84,7 @@ func (c *Client) GetPlayerInfo(playerId string) (*model.PlayerInfo, error) {
 	// TODO: Optional endpoint
 	url := fmt.Sprintf("https://enka.network/api/uid/%s?info", playerId)
 
-	body, err := c.fetchData(url)
+	body, err := c.fetchDataWithCache(url)
 	if err != nil {
 		return nil, err
 	}
@@ -94,6 +98,25 @@ func (c *Client) GetPlayerInfo(playerId string) (*model.PlayerInfo, error) {
 	}
 
 	return &playerInfo.PlayerInfo, nil
+}
+
+func (c *Client) GetCahce() Cache {
+	return &c.cache
+}
+
+func (c *Client) fetchDataWithCache(url string) ([]byte, error) {
+	if data := c.cache.Get(url); data != nil {
+		return data, nil
+	}
+
+	data, err := c.fetchData(url)
+	if err != nil {
+		return nil, err
+	}
+
+	c.cache.Set(url, data)
+
+	return data, nil
 }
 
 func (c *Client) fetchData(url string) ([]byte, error) {
