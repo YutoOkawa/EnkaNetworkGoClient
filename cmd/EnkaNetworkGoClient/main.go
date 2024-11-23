@@ -1,10 +1,11 @@
 package main
 
 import (
-	"EnkaNetworkGoClient/pkg/client"
-	"EnkaNetworkGoClient/pkg/model"
 	"fmt"
 	"os"
+
+	"github.com/YutoOkawa/EnkaNetworkGoClient/pkg/client"
+	"github.com/YutoOkawa/EnkaNetworkGoClient/pkg/model"
 )
 
 func main() {

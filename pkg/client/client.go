@@ -1,12 +1,13 @@
 package client
 
 import (
-	"EnkaNetworkGoClient/pkg/model"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"time"
+
+	"github.com/YutoOkawa/EnkaNetworkGoClient/pkg/model"
 )
 
 // TODO: cache
