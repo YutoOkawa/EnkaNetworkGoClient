@@ -101,10 +101,6 @@ func (c *Client) GetPlayerInfo(ctx context.Context, playerId string) (*model.Pla
 	return &playerInfo.PlayerInfo, nil
 }
 
-func (c *Client) GetCahce() Cache {
-	return &c.cache
-}
-
 func (c *Client) fetchDataWithCache(ctx context.Context, url string) ([]byte, error) {
 	if data := c.cache.Get(url); data != nil {
 		return data, nil
