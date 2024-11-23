@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/YutoOkawa/EnkaNetworkGoClient/pkg/model"
+	"github.com/YutoOkawa/EnkaNetworkGoClient/v0/pkg/model"
 )
 
 // TODO: cache
