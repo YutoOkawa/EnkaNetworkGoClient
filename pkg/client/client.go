@@ -11,7 +11,6 @@ import (
 	"github.com/YutoOkawa/EnkaNetworkGoClient/v0/pkg/model"
 )
 
-// TODO: cache
 // TODO: retry (only for 5xx)
 type Client struct {
 	client *http.Client
