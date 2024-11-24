@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/YutoOkawa/EnkaNetworkGoClient/v0/pkg/client"
-	"github.com/YutoOkawa/EnkaNetworkGoClient/v0/pkg/model"
+	"github.com/YutoOkawa/EnkaNetworkGoClient/pkg/client"
+	"github.com/YutoOkawa/EnkaNetworkGoClient/pkg/model"
 )
 
 func main() {

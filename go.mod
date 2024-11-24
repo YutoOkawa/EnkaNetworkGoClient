@@ -1,3 +1,3 @@
-module github.com/YutoOkawa/EnkaNetworkGoClient/v0
+module github.com/YutoOkawa/EnkaNetworkGoClient
 
 go 1.23.3

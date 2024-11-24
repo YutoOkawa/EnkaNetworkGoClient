@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/YutoOkawa/EnkaNetworkGoClient/v0/pkg/model"
+	"github.com/YutoOkawa/EnkaNetworkGoClient/pkg/model"
 )
 
 // TODO: retry (only for 5xx)
