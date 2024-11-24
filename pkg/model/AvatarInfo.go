@@ -1,15 +1,15 @@
 package model
 
 type AvatarInfo struct {
-	AvatarID              int             `json:"avatarId"`
-	TalentIdList          []int           `json:"talentIdList,omitempty"`
-	PropMap               map[string]Prop `json:"propMap"`
-	FightProp             map[string]int  `json:"fightProp"`
-	SkillDepotId          int             `json:"skillDepotId"`
-	InheritProudSkillList []int           `json:"inheritProudSkillList"`
-	SkillLevelMap         map[string]int  `json:"skillLevelMap"`
-	EquipList             []Equip         `json:"equipList"`
-	FetterInfo            map[string]int  `json:"fetterInfo"`
+	AvatarID              int                `json:"avatarId"`
+	TalentIdList          []int              `json:"talentIdList,omitempty"`
+	PropMap               map[string]Prop    `json:"propMap"`
+	FightProp             map[string]float64 `json:"fightProp"`
+	SkillDepotId          int                `json:"skillDepotId"`
+	InheritProudSkillList []int              `json:"inheritProudSkillList"`
+	SkillLevelMap         map[string]int     `json:"skillLevelMap"`
+	EquipList             []Equip            `json:"equipList"`
+	FetterInfo            map[string]int     `json:"fetterInfo"`
 }
 
 type Prop struct {
