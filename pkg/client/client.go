@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/YutoOkawa/EnkaNetworkGoClient/v0/pkg/model"
@@ -24,6 +25,7 @@ func NewClient() *Client {
 		},
 		cache: UserDataCache{
 			cache: make(map[string][]byte),
+			mutex: &sync.RWMutex{},
 		},
 	}
 }
